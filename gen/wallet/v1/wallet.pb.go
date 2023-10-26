@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        (unknown)
-// source: proto/wallet/v1/wallet.proto
+// source: wallet/v1/wallet.proto
 
 package v1
 
@@ -30,7 +30,7 @@ type PayRequest struct {
 func (x *PayRequest) Reset() {
 	*x = PayRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_wallet_v1_wallet_proto_msgTypes[0]
+		mi := &file_wallet_v1_wallet_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -43,7 +43,7 @@ func (x *PayRequest) String() string {
 func (*PayRequest) ProtoMessage() {}
 
 func (x *PayRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_wallet_v1_wallet_proto_msgTypes[0]
+	mi := &file_wallet_v1_wallet_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *PayRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PayRequest.ProtoReflect.Descriptor instead.
 func (*PayRequest) Descriptor() ([]byte, []int) {
-	return file_proto_wallet_v1_wallet_proto_rawDescGZIP(), []int{0}
+	return file_wallet_v1_wallet_proto_rawDescGZIP(), []int{0}
 }
 
 type PayResponse struct {
@@ -68,7 +68,7 @@ type PayResponse struct {
 func (x *PayResponse) Reset() {
 	*x = PayResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_wallet_v1_wallet_proto_msgTypes[1]
+		mi := &file_wallet_v1_wallet_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -81,7 +81,7 @@ func (x *PayResponse) String() string {
 func (*PayResponse) ProtoMessage() {}
 
 func (x *PayResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_wallet_v1_wallet_proto_msgTypes[1]
+	mi := &file_wallet_v1_wallet_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -94,7 +94,7 @@ func (x *PayResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PayResponse.ProtoReflect.Descriptor instead.
 func (*PayResponse) Descriptor() ([]byte, []int) {
-	return file_proto_wallet_v1_wallet_proto_rawDescGZIP(), []int{1}
+	return file_wallet_v1_wallet_proto_rawDescGZIP(), []int{1}
 }
 
 // Transfer
@@ -107,7 +107,7 @@ type TransferRequest struct {
 func (x *TransferRequest) Reset() {
 	*x = TransferRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_wallet_v1_wallet_proto_msgTypes[2]
+		mi := &file_wallet_v1_wallet_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -120,7 +120,7 @@ func (x *TransferRequest) String() string {
 func (*TransferRequest) ProtoMessage() {}
 
 func (x *TransferRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_wallet_v1_wallet_proto_msgTypes[2]
+	mi := &file_wallet_v1_wallet_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -133,7 +133,7 @@ func (x *TransferRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransferRequest.ProtoReflect.Descriptor instead.
 func (*TransferRequest) Descriptor() ([]byte, []int) {
-	return file_proto_wallet_v1_wallet_proto_rawDescGZIP(), []int{2}
+	return file_wallet_v1_wallet_proto_rawDescGZIP(), []int{2}
 }
 
 type TransferResponse struct {
@@ -145,7 +145,7 @@ type TransferResponse struct {
 func (x *TransferResponse) Reset() {
 	*x = TransferResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_wallet_v1_wallet_proto_msgTypes[3]
+		mi := &file_wallet_v1_wallet_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -158,7 +158,7 @@ func (x *TransferResponse) String() string {
 func (*TransferResponse) ProtoMessage() {}
 
 func (x *TransferResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_wallet_v1_wallet_proto_msgTypes[3]
+	mi := &file_wallet_v1_wallet_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -171,7 +171,7 @@ func (x *TransferResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransferResponse.ProtoReflect.Descriptor instead.
 func (*TransferResponse) Descriptor() ([]byte, []int) {
-	return file_proto_wallet_v1_wallet_proto_rawDescGZIP(), []int{3}
+	return file_wallet_v1_wallet_proto_rawDescGZIP(), []int{3}
 }
 
 // Topup
@@ -184,7 +184,7 @@ type TopupRequest struct {
 func (x *TopupRequest) Reset() {
 	*x = TopupRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_wallet_v1_wallet_proto_msgTypes[4]
+		mi := &file_wallet_v1_wallet_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -197,7 +197,7 @@ func (x *TopupRequest) String() string {
 func (*TopupRequest) ProtoMessage() {}
 
 func (x *TopupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_wallet_v1_wallet_proto_msgTypes[4]
+	mi := &file_wallet_v1_wallet_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -210,7 +210,7 @@ func (x *TopupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TopupRequest.ProtoReflect.Descriptor instead.
 func (*TopupRequest) Descriptor() ([]byte, []int) {
-	return file_proto_wallet_v1_wallet_proto_rawDescGZIP(), []int{4}
+	return file_wallet_v1_wallet_proto_rawDescGZIP(), []int{4}
 }
 
 type TopupResponse struct {
@@ -222,7 +222,7 @@ type TopupResponse struct {
 func (x *TopupResponse) Reset() {
 	*x = TopupResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_wallet_v1_wallet_proto_msgTypes[5]
+		mi := &file_wallet_v1_wallet_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -235,7 +235,7 @@ func (x *TopupResponse) String() string {
 func (*TopupResponse) ProtoMessage() {}
 
 func (x *TopupResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_wallet_v1_wallet_proto_msgTypes[5]
+	mi := &file_wallet_v1_wallet_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -248,52 +248,52 @@ func (x *TopupResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TopupResponse.ProtoReflect.Descriptor instead.
 func (*TopupResponse) Descriptor() ([]byte, []int) {
-	return file_proto_wallet_v1_wallet_proto_rawDescGZIP(), []int{5}
+	return file_wallet_v1_wallet_proto_rawDescGZIP(), []int{5}
 }
 
-var File_proto_wallet_v1_wallet_proto protoreflect.FileDescriptor
+var File_wallet_v1_wallet_proto protoreflect.FileDescriptor
 
-var file_proto_wallet_v1_wallet_proto_rawDesc = []byte{
-	0x0a, 0x1c, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2f, 0x76,
-	0x31, 0x2f, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x09,
-	0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x22, 0x0c, 0x0a, 0x0a, 0x50, 0x61, 0x79,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x0d, 0x0a, 0x0b, 0x50, 0x61, 0x79, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x11, 0x0a, 0x0f, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66,
-	0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x12, 0x0a, 0x10, 0x54, 0x72, 0x61,
-	0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0e, 0x0a,
-	0x0c, 0x54, 0x6f, 0x70, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x0f, 0x0a,
-	0x0d, 0x54, 0x6f, 0x70, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xcc,
-	0x01, 0x0a, 0x0d, 0x57, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x12, 0x36, 0x0a, 0x03, 0x50, 0x61, 0x79, 0x12, 0x15, 0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74,
-	0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16,
-	0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x79, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x3c, 0x0a, 0x05, 0x54, 0x6f, 0x70, 0x75,
-	0x70, 0x12, 0x17, 0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x6f,
-	0x70, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x77, 0x61, 0x6c,
-	0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x6f, 0x70, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x45, 0x0a, 0x08, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66,
-	0x65, 0x72, 0x12, 0x1a, 0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54,
-	0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b,
-	0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73,
-	0x66, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x15, 0x5a,
-	0x13, 0x67, 0x65, 0x6e, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x77, 0x61, 0x6c, 0x6c, 0x65,
-	0x74, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_wallet_v1_wallet_proto_rawDesc = []byte{
+	0x0a, 0x16, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2f, 0x76, 0x31, 0x2f, 0x77, 0x61, 0x6c, 0x6c,
+	0x65, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x09, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74,
+	0x2e, 0x76, 0x31, 0x22, 0x0c, 0x0a, 0x0a, 0x50, 0x61, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x22, 0x0d, 0x0a, 0x0b, 0x50, 0x61, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x11, 0x0a, 0x0f, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x22, 0x12, 0x0a, 0x10, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0e, 0x0a, 0x0c, 0x54, 0x6f, 0x70, 0x75, 0x70,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x0f, 0x0a, 0x0d, 0x54, 0x6f, 0x70, 0x75, 0x70,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xcc, 0x01, 0x0a, 0x0d, 0x57, 0x61, 0x6c,
+	0x6c, 0x65, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x36, 0x0a, 0x03, 0x50, 0x61,
+	0x79, 0x12, 0x15, 0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61,
+	0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65,
+	0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x12, 0x3c, 0x0a, 0x05, 0x54, 0x6f, 0x70, 0x75, 0x70, 0x12, 0x17, 0x2e, 0x77, 0x61,
+	0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x6f, 0x70, 0x75, 0x70, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31,
+	0x2e, 0x54, 0x6f, 0x70, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
+	0x12, 0x45, 0x0a, 0x08, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x12, 0x1a, 0x2e, 0x77,
+	0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65,
+	0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x77, 0x61, 0x6c, 0x6c, 0x65,
+	0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x15, 0x5a, 0x13, 0x67, 0x65, 0x6e, 0x2f, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x77, 0x61, 0x6c, 0x6c, 0x65, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_proto_wallet_v1_wallet_proto_rawDescOnce sync.Once
-	file_proto_wallet_v1_wallet_proto_rawDescData = file_proto_wallet_v1_wallet_proto_rawDesc
+	file_wallet_v1_wallet_proto_rawDescOnce sync.Once
+	file_wallet_v1_wallet_proto_rawDescData = file_wallet_v1_wallet_proto_rawDesc
 )
 
-func file_proto_wallet_v1_wallet_proto_rawDescGZIP() []byte {
-	file_proto_wallet_v1_wallet_proto_rawDescOnce.Do(func() {
-		file_proto_wallet_v1_wallet_proto_rawDescData = protoimpl.X.CompressGZIP(file_proto_wallet_v1_wallet_proto_rawDescData)
+func file_wallet_v1_wallet_proto_rawDescGZIP() []byte {
+	file_wallet_v1_wallet_proto_rawDescOnce.Do(func() {
+		file_wallet_v1_wallet_proto_rawDescData = protoimpl.X.CompressGZIP(file_wallet_v1_wallet_proto_rawDescData)
 	})
-	return file_proto_wallet_v1_wallet_proto_rawDescData
+	return file_wallet_v1_wallet_proto_rawDescData
 }
 
-var file_proto_wallet_v1_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_proto_wallet_v1_wallet_proto_goTypes = []interface{}{
+var file_wallet_v1_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_wallet_v1_wallet_proto_goTypes = []interface{}{
 	(*PayRequest)(nil),       // 0: wallet.v1.PayRequest
 	(*PayResponse)(nil),      // 1: wallet.v1.PayResponse
 	(*TransferRequest)(nil),  // 2: wallet.v1.TransferRequest
@@ -301,7 +301,7 @@ var file_proto_wallet_v1_wallet_proto_goTypes = []interface{}{
 	(*TopupRequest)(nil),     // 4: wallet.v1.TopupRequest
 	(*TopupResponse)(nil),    // 5: wallet.v1.TopupResponse
 }
-var file_proto_wallet_v1_wallet_proto_depIdxs = []int32{
+var file_wallet_v1_wallet_proto_depIdxs = []int32{
 	0, // 0: wallet.v1.WalletService.Pay:input_type -> wallet.v1.PayRequest
 	4, // 1: wallet.v1.WalletService.Topup:input_type -> wallet.v1.TopupRequest
 	2, // 2: wallet.v1.WalletService.Transfer:input_type -> wallet.v1.TransferRequest
@@ -315,13 +315,13 @@ var file_proto_wallet_v1_wallet_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_proto_wallet_v1_wallet_proto_init() }
-func file_proto_wallet_v1_wallet_proto_init() {
-	if File_proto_wallet_v1_wallet_proto != nil {
+func init() { file_wallet_v1_wallet_proto_init() }
+func file_wallet_v1_wallet_proto_init() {
+	if File_wallet_v1_wallet_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_proto_wallet_v1_wallet_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_wallet_v1_wallet_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PayRequest); i {
 			case 0:
 				return &v.state
@@ -333,7 +333,7 @@ func file_proto_wallet_v1_wallet_proto_init() {
 				return nil
 			}
 		}
-		file_proto_wallet_v1_wallet_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_wallet_v1_wallet_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PayResponse); i {
 			case 0:
 				return &v.state
@@ -345,7 +345,7 @@ func file_proto_wallet_v1_wallet_proto_init() {
 				return nil
 			}
 		}
-		file_proto_wallet_v1_wallet_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_wallet_v1_wallet_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TransferRequest); i {
 			case 0:
 				return &v.state
@@ -357,7 +357,7 @@ func file_proto_wallet_v1_wallet_proto_init() {
 				return nil
 			}
 		}
-		file_proto_wallet_v1_wallet_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_wallet_v1_wallet_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TransferResponse); i {
 			case 0:
 				return &v.state
@@ -369,7 +369,7 @@ func file_proto_wallet_v1_wallet_proto_init() {
 				return nil
 			}
 		}
-		file_proto_wallet_v1_wallet_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_wallet_v1_wallet_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TopupRequest); i {
 			case 0:
 				return &v.state
@@ -381,7 +381,7 @@ func file_proto_wallet_v1_wallet_proto_init() {
 				return nil
 			}
 		}
-		file_proto_wallet_v1_wallet_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_wallet_v1_wallet_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TopupResponse); i {
 			case 0:
 				return &v.state
@@ -398,18 +398,18 @@ func file_proto_wallet_v1_wallet_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_proto_wallet_v1_wallet_proto_rawDesc,
+			RawDescriptor: file_wallet_v1_wallet_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_wallet_v1_wallet_proto_goTypes,
-		DependencyIndexes: file_proto_wallet_v1_wallet_proto_depIdxs,
-		MessageInfos:      file_proto_wallet_v1_wallet_proto_msgTypes,
+		GoTypes:           file_wallet_v1_wallet_proto_goTypes,
+		DependencyIndexes: file_wallet_v1_wallet_proto_depIdxs,
+		MessageInfos:      file_wallet_v1_wallet_proto_msgTypes,
 	}.Build()
-	File_proto_wallet_v1_wallet_proto = out.File
-	file_proto_wallet_v1_wallet_proto_rawDesc = nil
-	file_proto_wallet_v1_wallet_proto_goTypes = nil
-	file_proto_wallet_v1_wallet_proto_depIdxs = nil
+	File_wallet_v1_wallet_proto = out.File
+	file_wallet_v1_wallet_proto_rawDesc = nil
+	file_wallet_v1_wallet_proto_goTypes = nil
+	file_wallet_v1_wallet_proto_depIdxs = nil
 }
