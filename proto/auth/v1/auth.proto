@@ -1,14 +1,30 @@
 syntax = "proto3";
 
 package auth.v1;
-import "user/v1/user.proto";
 
-option go_package = "gen/proto/auth/v1";
+import "user/v1/user.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1";
 
 service AuthService {
-	rpc Register(RegisterRequest) returns (RegisterResponse) {}
-	rpc Login(LoginRequest) returns (LoginResponse) {}
-	rpc Me(MeRequest) returns (MeResponse) {}
+	rpc Register(RegisterRequest) returns (RegisterResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/register"
+			body: "*"
+		};
+	}
+	rpc Login(LoginRequest) returns (LoginResponse) {
+		option (google.api.http) = {
+			post: "/v1/auth/login"
+			body: "*"
+		};
+	}
+	rpc Me(MeRequest) returns (MeResponse) {
+		option (google.api.http) = {
+			get: "/v1/auth/me"
+		};
+	}
 }
 
 message AuthToken {
