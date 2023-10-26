@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package wallet.v1;
+
+option go_package = "gen/proto/wallet/v1";
+
+service WalletService {
+	rpc Pay(PayRequest) returns (PayResponse) {}
+	rpc Topup(TopupRequest) returns (TopupResponse) {}
+	rpc Transfer(TransferRequest) returns (TransferResponse) {}
+}
+
+// Pay
+message PayRequest {
+
+}
+
+message PayResponse {
+
+}
+
+// Transfer
+message TransferRequest {
+
+}
+
+message TransferResponse {
+
+}
+
+// Topup
+message TopupRequest {
+
+}
+
+message TopupResponse {
+
+}
+
