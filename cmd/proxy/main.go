@@ -1,17 +1,18 @@
 package main
 
 import (
-  "context"
-  "flag"
-  "net/http"
+	"context"
+	"flag"
+	"net/http"
 
-  "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-  "google.golang.org/grpc"
-  "google.golang.org/grpc/credentials/insecure"
-  "google.golang.org/grpc/grpclog"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/health/grpc_health_v1"
 
-  auth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
-  wallet "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
+	auth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
+	wallet "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
 )
 
 var (
@@ -25,11 +26,17 @@ func run() error {
   ctx, cancel := context.WithCancel(ctx)
   defer cancel()
 
+  grpcConn, err := grpc.Dial(*grpcServerEndpoint, grpc.WithInsecure())
+  if err != nil {
+    return err
+  }
+
   // Register gRPC server endpoint
   // Note: Make sure the gRPC server is running properly and accessible
-  mux := runtime.NewServeMux()
+  healthClient := grpc_health_v1.NewHealthClient(grpcConn)
+  mux := runtime.NewServeMux(runtime.WithHealthEndpointAt(healthClient, "/health"))
   opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-  err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+  err = auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
   if err != nil {
     return err
   }

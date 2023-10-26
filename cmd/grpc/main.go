@@ -5,11 +5,13 @@ import (
 	"log"
 	"net"
 
-	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	_ "github.com/lib/pq"
+	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	genauth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
 	"github.com/thinc-org/10-days-paotooong/internal/auth"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func main() {
@@ -24,10 +26,11 @@ func main() {
 		log.Fatalf("unable to connect to database: %v", err)
 	}
 	defer dbClient.Close()
-	
+
 	authSvc := auth.NewService(dbClient)
 
 	genauth.RegisterAuthServiceServer(server, authSvc)
+	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	if err = dbClient.Schema.Create(ctx); err != nil {
 		log.Fatalf("unable to migrate: %v", err)
