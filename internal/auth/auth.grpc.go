@@ -4,9 +4,12 @@ import (
 	"context"
 
 	"github.com/thinc-org/10-days-paotooong/gen/ent"
+	"github.com/thinc-org/10-days-paotooong/gen/ent/user"
 	v1 "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
 	"github.com/thinc-org/10-days-paotooong/internal/token"
 	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type authServiceImpl struct {
@@ -25,7 +28,28 @@ func NewService(client *ent.Client, tokenSvc token.TokenService) v1.AuthServiceS
 }
 
 func (s *authServiceImpl) Login(ctx context.Context, request *v1.LoginRequest) (*v1.LoginResponse, error) {
-	return nil, nil
+	user, err := s.client.User.Query().Where(
+		user.Email(request.GetEmail()),
+	).First(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !comparePasswordWithHash(user.Hash, request.Password) {
+		return nil, status.Error(codes.Unauthenticated, "incorrect password")
+	}
+
+	uId := user.ID
+	token := s.tokenSvc.CreateToken(uId.String())
+	ttl := s.tokenSvc.TTL()
+	
+	return &v1.LoginResponse{
+		Token: &v1.AuthToken{
+			AccessToken: token,
+			Ttl: int32(ttl),
+		},
+	}, nil
 }
 
 func (s *authServiceImpl) Register(ctx context.Context, request *v1.RegisterRequest) (*v1.RegisterResponse, error) {
