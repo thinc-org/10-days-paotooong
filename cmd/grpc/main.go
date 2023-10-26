@@ -1,18 +1,22 @@
 package main
 
 import (
-	"context"
 	"log"
+
+	"context"
 	"net"
 
 	_ "github.com/lib/pq"
 	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	genauth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
 	"github.com/thinc-org/10-days-paotooong/internal/auth"
+	"github.com/thinc-org/10-days-paotooong/internal/token"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
+	"github.com/thinc-org/10-days-paotooong/docs"
 )
+
 
 func main() {
 	lis, err := net.Listen("tcp", ":8181")
@@ -27,7 +31,10 @@ func main() {
 	}
 	defer dbClient.Close()
 
-	authSvc := auth.NewService(dbClient)
+	docsHandlerFunc := docs.GetDocHandler()
+
+	tokenSvc := token.NewService(([]byte)("5555"), 3600)
+	authSvc := auth.NewService(dbClient, tokenSvc)
 
 	genauth.RegisterAuthServiceServer(server, authSvc)
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())

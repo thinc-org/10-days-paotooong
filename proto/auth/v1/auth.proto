@@ -29,8 +29,7 @@ service AuthService {
 
 message AuthToken {
 	string access_token = 1;
-	string refresh_token = 2;
-	int32 ttl = 3;
+	int32 ttl = 2;
 }
 
 // Register
