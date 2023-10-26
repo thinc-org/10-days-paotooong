@@ -10,8 +10,8 @@ import (
   "google.golang.org/grpc/credentials/insecure"
   "google.golang.org/grpc/grpclog"
 
-  auth "github.com/thinc-org/10-days-paotooong/gen/auth/v1"
-  wallet "github.com/thinc-org/10-days-paotooong/gen/wallet/v1"
+  auth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
+  wallet "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
 )
 
 var (

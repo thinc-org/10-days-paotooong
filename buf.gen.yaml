@@ -9,7 +9,7 @@ plugins:
     opt:
       - paths=source_relative
   - plugin: grpc-gateway
-    out: gen
+    out: gen/proto
     opt:
       - paths=source_relative
       - generate_unbound_methods=true
