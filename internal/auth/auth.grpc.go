@@ -4,14 +4,17 @@ import (
 	"context"
 	"net/mail"
 
+	"github.com/bufbuild/protovalidate-go"
+	"github.com/google/uuid"
 	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	"github.com/thinc-org/10-days-paotooong/gen/ent/user"
 	v1 "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
+	user_v1 "github.com/thinc-org/10-days-paotooong/gen/proto/user/v1"
 	"github.com/thinc-org/10-days-paotooong/internal/token"
+	"github.com/thinc-org/10-days-paotooong/internal/utils"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"github.com/bufbuild/protovalidate-go"
 )
 
 var _ v1.AuthServiceServer = &authServiceImpl{}
@@ -106,7 +109,26 @@ func (s *authServiceImpl) Register(ctx context.Context, request *v1.RegisterRequ
 }
 
 func (s *authServiceImpl) Me(ctx context.Context, request *v1.MeRequest) (*v1.MeResponse, error) {
-	return nil, nil
+	uid, err := utils.InferUidFromContext(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+
+	uuid, err := uuid.Parse(uid)
+	if err != nil {
+		return nil, status.Error(codes.FailedPrecondition, "invalid uid")
+	}
+
+	user, err := s.client.User.Query().Where(user.ID(uuid)).First(ctx)
+	return &v1.MeResponse{
+		User: &user_v1.User{
+			Id: uid,
+			Email: user.Email,
+			Money: int32(user.Money),
+			FirstName: user.FirstName,
+			FamilyName: user.FamilyName,
+		},
+	}, nil
 }
 
 func comparePasswordWithHash(hash, password string) bool {

@@ -4,6 +4,8 @@ package wallet.v1;
 import "user/v1/user.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "buf/validate/validate.proto";
 
 option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1";
 
@@ -37,8 +39,14 @@ message UserTransaction {
 
 // Pay
 message PayRequest {
-	string receiver_id = 1;
-	float amount = 2;
+	string receiver_id = 1 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.uuid = true
+	];
+	float amount = 2 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).float.gt = 0
+	];
 }
 
 message PayResponse {
