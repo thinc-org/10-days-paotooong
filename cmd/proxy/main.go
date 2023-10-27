@@ -2,7 +2,8 @@ package main
 
 import (
 	"context"
-	"flag"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -11,16 +12,11 @@ import (
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/health/grpc_health_v1"
 
+	"github.com/thinc-org/10-days-paotooong/config"
 	"github.com/thinc-org/10-days-paotooong/docs"
 	auth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
 	wallet "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
 	"github.com/thinc-org/10-days-paotooong/static"
-)
-
-var (
-	// command-line options:
-	// gRPC server endpoint
-	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:8181", "gRPC server endpoint")
 )
 
 func run() error {
@@ -28,7 +24,12 @@ func run() error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	grpcConn, err := grpc.Dial(*grpcServerEndpoint, grpc.WithInsecure())
+	config, err := config.LoadProxyConfig()
+	if err != nil {
+		return err
+	}
+
+	grpcConn, err := grpc.Dial(config.GrpcUrl, grpc.WithInsecure())
 	if err != nil {
 		return err
 	}
@@ -43,22 +44,22 @@ func run() error {
 	mux.HandlePath("GET", "/v1/docs", docsHandlerFunc)
 	mux.HandlePath("GET", "/static/*", staticHandlerFunc)
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err = auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err = auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, config.GrpcUrl, opts)
 	if err != nil {
 		return err
 	}
 
-	err = wallet.RegisterWalletServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err = wallet.RegisterWalletServiceHandlerFromEndpoint(ctx, mux, config.GrpcUrl, opts)
 	if err != nil {
 		return err
 	}
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	return http.ListenAndServe(":8080", mux)
+
+	log.Printf("start listening http proxy on port %v", config.Port)
+	return http.ListenAndServe(fmt.Sprintf(":%v", config.Port), mux)
 }
 
 func main() {
-	flag.Parse()
-
 	if err := run(); err != nil {
 		grpclog.Fatal(err)
 	}

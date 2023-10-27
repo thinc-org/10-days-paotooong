@@ -1,12 +1,15 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
 
 	"context"
 	"net"
 
 	_ "github.com/lib/pq"
+	"github.com/thinc-org/10-days-paotooong/config"
 	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	genauth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
 	genwallet "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
@@ -20,18 +23,23 @@ import (
 	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
-func main() {
-	lis, err := net.Listen("tcp", ":8181")
+func run() error {
+	config, err := config.LoadGrpcConfig()
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		return err
+	}
+
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%v", config.Port))
+	if err != nil {
+		return errors.New(fmt.Sprintf("unable to listen to the port: %v", err))
 	}
 	tokenSvc := token.NewService(([]byte)("5555"), 3600)
 	authInterceptor := interceptor.NewAuthInterceptor(tokenSvc)
 	server := grpc.NewServer(grpc.UnaryInterceptor(authInterceptor.Unary()))
 	ctx := context.Background()
-	dbClient, err := ent.Open("postgres", "postgres://postgres:123456@localhost:5432/paotooong?sslmode=disable")
+	dbClient, err := ent.Open("postgres", config.DbConnectionString)
 	if err != nil {
-		log.Fatalf("unable to connect to database: %v", err)
+		return errors.New(fmt.Sprintf("unable to connect to database: %v", err))
 	}
 	defer dbClient.Close()
 
@@ -45,10 +53,18 @@ func main() {
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	if err = dbClient.Schema.Create(ctx); err != nil {
-		log.Fatalf("unable to migrate: %v", err)
+		return errors.New(fmt.Sprintf("unable to migrate: %v", err))
 	}
 
+	log.Printf("start listening grpc servicec on port %v", config.Port)
 	if err := server.Serve(lis); err != nil {
-		log.Fatalf("server unexpectedly failed: %v", err)
+		return errors.New(fmt.Sprintf("server unexpectedly failed: %v", err))
+	}
+	return nil
+}
+
+func main() {
+	if err := run(); err != nil {
+		log.Fatal(err)
 	}
 }
