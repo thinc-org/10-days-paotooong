@@ -5,7 +5,6 @@ import "user/v1/user.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
-import "google/api/field_behavior.proto";
 import "buf/validate/validate.proto";
 
 option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1";
