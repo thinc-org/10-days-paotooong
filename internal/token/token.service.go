@@ -33,13 +33,14 @@ var (
 )
 
 func (s *tokenServiceImpl) CreateToken(uid string) string {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	ss := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"iss": issuer,
 		"sub": uid,
 		"iat": time.Now().Unix(),
 		"exp": time.Now().Add(time.Second * time.Duration(s.ttl)).Unix(),
 	})
-	return token.Raw
+	token, _ := ss.SignedString(s.secret)
+	return token
 }
 
 func (s *tokenServiceImpl) Validate(tokenString string) (string, error) {

@@ -15,10 +15,10 @@ type User struct {
 func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
-		field.String("email"),
+		field.String("email").Unique().NotEmpty(),
 		field.String("hash"),
-		field.String("first_name"),
-		field.String("family_name"),
+		field.String("first_name").NotEmpty(),
+		field.String("family_name").NotEmpty(),
 		field.Float("money"),
 	}
 }

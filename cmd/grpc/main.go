@@ -14,7 +14,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-	"github.com/thinc-org/10-days-paotooong/docs"
 )
 
 
@@ -30,8 +29,6 @@ func main() {
 		log.Fatalf("unable to connect to database: %v", err)
 	}
 	defer dbClient.Close()
-
-	docsHandlerFunc := docs.GetDocHandler()
 
 	tokenSvc := token.NewService(([]byte)("5555"), 3600)
 	authSvc := auth.NewService(dbClient, tokenSvc)

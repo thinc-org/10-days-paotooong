@@ -6,7 +6,7 @@ import (
 
 	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	"github.com/thinc-org/10-days-paotooong/gen/ent/user"
-	v1 "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
+	v1 "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
 	"github.com/thinc-org/10-days-paotooong/internal/token"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
@@ -14,18 +14,18 @@ import (
 	"github.com/bufbuild/protovalidate-go"
 )
 
-var _ v1.AuthServiceServer = &authServiceImpl{}
+var _ v1.WalletServiceServer = &walletServiceImpl{}
 
-type authServiceImpl struct {
-	v1.UnimplementedAuthServiceServer
+type walletServiceImpl struct {
+	v1.UnimplementedWalletServiceServer
 	
 	client *ent.Client
 	tokenSvc token.TokenService
 }
 
-func NewService(client *ent.Client, tokenSvc token.TokenService) v1.AuthServiceServer {
-	return &authServiceImpl{ 
-		v1.UnimplementedAuthServiceServer{},
+func NewService(client *ent.Client, tokenSvc token.TokenService) v1.WalletServiceServer {
+	return &walletServiceImpl{ 
+		v1.UnimplementedWalletServiceServer{},
 		client,
 		tokenSvc,
 	}

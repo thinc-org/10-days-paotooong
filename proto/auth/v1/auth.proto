@@ -4,6 +4,8 @@ package auth.v1;
 
 import "user/v1/user.proto";
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "buf/validate/validate.proto";
 
 option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1";
 
@@ -34,10 +36,23 @@ message AuthToken {
 
 // Register
 message RegisterRequest {
-	string email = 1;
-	string password = 2;
-	string first_name = 3;
-	string family_name = 4;
+	string email = 1 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.email = true
+	];
+	string password = 2 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.min_len = 8,
+		(buf.validate.field).string.max_len = 32
+	];
+	string first_name = 3 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.min_len = 1
+	];
+	string family_name = 4 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.min_len = 1
+	];
 }
 
 message RegisterResponse {
@@ -46,8 +61,15 @@ message RegisterResponse {
 
 // Login
 message LoginRequest {
-	string email = 1;
-	string password = 2;
+	string email = 1 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.email = true
+	];
+	string password = 2 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.min_len = 8,
+		(buf.validate.field).string.max_len = 32
+	];
 }
 
 message LoginResponse {
