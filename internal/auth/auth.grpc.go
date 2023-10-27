@@ -94,6 +94,9 @@ func (s *authServiceImpl) Register(ctx context.Context, request *v1.RegisterRequ
 		Save(ctx)
 
 	if err != nil {
+		if ent.IsConstraintError(err) {
+			return nil, status.Error(codes.FailedPrecondition, "this email is already registered")
+		}
 		return nil, err
 	}
 

@@ -56,7 +56,7 @@ func run() error {
 		return errors.New(fmt.Sprintf("unable to migrate: %v", err))
 	}
 
-	log.Printf("start listening grpc servicec on port %v", config.Port)
+	log.Printf("start listening grpc service on port %v", config.Port)
 	if err := server.Serve(lis); err != nil {
 		return errors.New(fmt.Sprintf("server unexpectedly failed: %v", err))
 	}
