@@ -12,6 +12,7 @@ import (
 	"github.com/thinc-org/10-days-paotooong/internal/auth"
 	"github.com/thinc-org/10-days-paotooong/internal/interceptor"
 	"github.com/thinc-org/10-days-paotooong/internal/token"
+	"github.com/thinc-org/10-days-paotooong/internal/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -32,7 +33,9 @@ func main() {
 	}
 	defer dbClient.Close()
 
-	authSvc := auth.NewService(dbClient, tokenSvc)
+	userRepo := user.NewRepository(dbClient)
+
+	authSvc := auth.NewService(dbClient, tokenSvc, userRepo)
 
 	genauth.RegisterAuthServiceServer(server, authSvc)
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())

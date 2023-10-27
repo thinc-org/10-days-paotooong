@@ -22,6 +22,12 @@ type userRepositoryImpl struct {
 	client *ent.Client
 }
 
+func NewRepository(client *ent.Client) UserRepository {
+	return &userRepositoryImpl{
+		client,
+	}
+}
+
 func (r *userRepositoryImpl) FindUserById(ctx context.Context, uid string) (*ent.User, error) {
 	uuid, err := uuid.Parse(uid)
 	if err != nil {
