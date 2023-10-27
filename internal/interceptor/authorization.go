@@ -2,7 +2,6 @@ package interceptor
 
 import (
 	"context"
-	"log"
 	"strings"
 
 	"github.com/thinc-org/10-days-paotooong/internal/token"
@@ -26,12 +25,10 @@ func (i *AuthInterceptor) Unary() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 		md, ok := metadata.FromIncomingContext(ctx)
 		if !ok {
-			log.Print("cannot load md")
 			return handler(ctx, req)
 		}
 
 		if len(md.Get("authorization")) <= 0 {
-			log.Print("len is 0")
 			return handler(ctx, req)
 		}
 		headerValue := md.Get("authorization")[0]
@@ -43,10 +40,8 @@ func (i *AuthInterceptor) Unary() grpc.UnaryServerInterceptor {
 
 		uid, err := i.tokenSvc.Validate(token)
 		if err == nil {
-			log.Printf("auth: %v", uid)
 			return handler(context.WithValue(ctx, "uid", uid), req)
 		}
-		log.Printf("failed to validate: %v", err)
 
 		return handler(ctx, req)
 	}
