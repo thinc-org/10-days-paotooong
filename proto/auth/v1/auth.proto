@@ -25,7 +25,9 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 			"For example:\n"
 			"```\n"
 			"curl -X POST -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....\" /v1/wallet/topup "
-			"```"
+			"```\n\n"
+			"If you get `Unauthorized`, this mean that you have not put in your token "
+			"or your token is invalid (expired, incorrect hash)"
 		extensions: {
 		key: "x-logo"
 		value: {
