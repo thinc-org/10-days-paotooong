@@ -5,6 +5,7 @@ import "user/v1/user.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
+import "google/api/field_behavior.proto";
 import "buf/validate/validate.proto";
 
 option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1";
@@ -25,10 +26,17 @@ service WalletService {
 
 message Transaction {
 	string transaction_id = 1;
-	UserTransaction payer = 2;
-	UserTransaction receiver = 3;
+	optional UserTransaction payer = 2;
+	optional UserTransaction receiver = 3;
 	float amount = 4;
 	google.protobuf.Timestamp created_at = 5;
+	TransactionType type = 6;
+}
+
+enum TransactionType {
+	TRANSACTION_TYPE_UNSPECIFIED = 0;
+	TRANSACTION_TYPE_PAY = 1;
+	TRANSACTION_TYPE_TOPUP = 2;
 }
 
 message UserTransaction {

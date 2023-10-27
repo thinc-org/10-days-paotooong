@@ -21,6 +21,7 @@ func (User) Fields() []ent.Field {
 		field.String("first_name").NotEmpty(),
 		field.String("family_name").NotEmpty(),
 		field.Float("money"),
+		field.Time("last_topup").Optional().Nillable(),
 	}
 }
 

@@ -18,10 +18,11 @@ type Transaction struct {
 func (Transaction) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
-		field.UUID("payer_id", uuid.UUID{}),
-		field.UUID("receiver_id", uuid.UUID{}),
+		field.UUID("payer_id", uuid.UUID{}).Optional(),
+		field.UUID("receiver_id", uuid.UUID{}).Optional(),
 		field.Float("amount"),
 		field.Time("created_at").Default(time.Now),
+		field.String("type"),
 	}
 }
 
@@ -31,12 +32,10 @@ func (Transaction) Edges() []ent.Edge {
 		edge.From("payer", User.Type).
 			Ref("out_transactions").
 			Unique().
-			Field("payer_id").
-			Required(),
+			Field("payer_id"),
 		edge.From("receiver", User.Type).
 			Ref("in_transactions").
 			Unique().
-			Field("receiver_id").
-			Required(),
+			Field("receiver_id"),
 	}
 }

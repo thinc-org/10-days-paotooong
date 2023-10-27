@@ -3,6 +3,7 @@ syntax = "proto3";
 package user.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/user/v1";
 
@@ -12,5 +13,6 @@ message User {
 	string first_name = 3;
 	string family_name = 4;
 	int32 money = 5;
+	optional google.protobuf.Timestamp last_topup = 6;
 }
 

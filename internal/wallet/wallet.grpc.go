@@ -2,6 +2,7 @@ package wallet
 
 import (
 	"context"
+	"time"
 
 	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	v1 "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
@@ -41,6 +42,10 @@ func (s *walletServiceImpl) Pay(ctx context.Context, request *v1.PayRequest) (*v
 	
 	receiverId := request.ReceiverId
 	receiver, err := s.userRepo.FindUserById(ctx, receiverId)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "receiver not found")
+	}
+
 	amount := request.GetAmount()
 
 	tx, err := s.client.Tx(ctx)
@@ -60,7 +65,7 @@ func (s *walletServiceImpl) Pay(ctx context.Context, request *v1.PayRequest) (*v
 		return nil, status.Error(codes.Internal, "internal server error")
 	}
 
-	transaction, err := tx.Transaction.Create().SetPayer(payer).SetReceiver(receiver).SetAmount(float64(amount)).Save(ctx)
+	transaction, err := tx.Transaction.Create().SetPayer(payer).SetReceiver(receiver).SetAmount(float64(amount)).SetType("pay").Save(ctx)
 	if err != nil {
 		tx.Rollback()
 		return nil, status.Error(codes.Internal, "internal server error")
@@ -88,11 +93,58 @@ func (s *walletServiceImpl) Pay(ctx context.Context, request *v1.PayRequest) (*v
 			CreatedAt: &timestamppb.Timestamp{
 				Seconds: transaction.CreatedAt.Unix(),
 			},
+			Type: v1.TransactionType_TRANSACTION_TYPE_PAY,
 		},
 	}, nil
 }
 
 func (s *walletServiceImpl) Topup(ctx context.Context, request *v1.TopupRequest) (*v1.TopupResponse, error) {
-	return nil, nil
+	user, err := s.userRepo.InferUserFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	amount := 100.0
+	if user.LastTopup != nil && time.Since(*user.LastTopup) < time.Duration(10 * time.Minute) {
+		return nil, status.Error(codes.FailedPrecondition, "last topup is within 10 minutes")
+	}
+
+	tx, err := s.client.Tx(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
+
+	_, err = tx.User.UpdateOneID(user.ID).SetMoney(user.Money + amount).SetLastTopup(time.Now()).Save(ctx)
+	if err != nil {
+		tx.Rollback()
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
+
+	transaction, err := tx.Transaction.Create().SetReceiver(user).SetAmount(amount).SetType("topup").Save(ctx)
+	if err != nil {
+		tx.Rollback()
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
+
+	return &v1.TopupResponse{
+		Transaction: &v1.Transaction{
+			TransactionId: transaction.ID.String(),
+			Receiver: &v1.UserTransaction{
+				Id: user.ID.String(),
+				FirstName: user.FirstName,
+				FamilyName: user.FamilyName,
+			},
+			Amount: float32(amount),
+			CreatedAt: &timestamppb.Timestamp{
+				Seconds: transaction.CreatedAt.Unix(),
+			},
+			Type: v1.TransactionType_TRANSACTION_TYPE_TOPUP,
+		},
+	}, nil
 }
 
