@@ -9,10 +9,12 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/thinc-org/10-days-paotooong/gen/ent"
 	genauth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
+	genwallet "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
 	"github.com/thinc-org/10-days-paotooong/internal/auth"
 	"github.com/thinc-org/10-days-paotooong/internal/interceptor"
 	"github.com/thinc-org/10-days-paotooong/internal/token"
 	"github.com/thinc-org/10-days-paotooong/internal/user"
+	"github.com/thinc-org/10-days-paotooong/internal/wallet"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -36,8 +38,10 @@ func main() {
 	userRepo := user.NewRepository(dbClient)
 
 	authSvc := auth.NewService(dbClient, tokenSvc, userRepo)
+	walletSvc := wallet.NewService(dbClient, userRepo)
 
 	genauth.RegisterAuthServiceServer(server, authSvc)
+	genwallet.RegisterWalletServiceServer(server, walletSvc)
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	if err = dbClient.Schema.Create(ctx); err != nil {

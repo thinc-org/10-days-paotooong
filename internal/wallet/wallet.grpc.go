@@ -1,4 +1,4 @@
-package auth
+package wallet
 
 import (
 	"context"
@@ -41,11 +41,32 @@ func (s *walletServiceImpl) Pay(ctx context.Context, request *v1.PayRequest) (*v
 	
 	receiverId := request.ReceiverId
 	receiver, err := s.userRepo.FindUserById(ctx, receiverId)
+	amount := request.GetAmount()
 
-	receiver.Update().SetMoney(float64(request.Amount) + float64(request.GetAmount())).Save(ctx)
-	payer.Update().SetMoney(payer.Money - float64(request.GetAmount())).Save(ctx)
-	transaction, err := s.client.Transaction.Create().AddPayer(payer).AddReceiver(receiver).Save(ctx)
+	tx, err := s.client.Tx(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
 
+	_, err = tx.User.UpdateOneID(receiver.ID).SetMoney(receiver.Money + float64(amount)).Save(ctx)
+	if err != nil {
+		tx.Rollback()
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
+
+	_, err = tx.User.UpdateOneID(payer.ID).SetMoney(payer.Money - float64(amount)).Save(ctx)
+	if err != nil {
+		tx.Rollback()
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
+
+	transaction, err := tx.Transaction.Create().SetPayer(payer).SetReceiver(receiver).SetAmount(float64(amount)).Save(ctx)
+	if err != nil {
+		tx.Rollback()
+		return nil, status.Error(codes.Internal, "internal server error")
+	}
+
+	err = tx.Commit()
 	if err != nil {
 		return nil, status.Error(codes.Internal, "internal server error")
 	}
