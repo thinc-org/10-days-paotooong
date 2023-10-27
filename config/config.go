@@ -5,6 +5,7 @@ import "github.com/spf13/viper"
 type GrpcConfig struct {
 	Port               int    `mapstructure:"port"`
 	DbConnectionString string `mapstructure:"connection"`
+	Secret             string `mapstructure:"secret"`
 }
 
 type ProxyConfig struct {

@@ -33,7 +33,7 @@ func run() error {
 	if err != nil {
 		return errors.New(fmt.Sprintf("unable to listen to the port: %v", err))
 	}
-	tokenSvc := token.NewService(([]byte)("5555"), 3600)
+	tokenSvc := token.NewService(([]byte)(config.Secret), 3600)
 	authInterceptor := interceptor.NewAuthInterceptor(tokenSvc)
 	server := grpc.NewServer(grpc.UnaryInterceptor(authInterceptor.Unary()))
 	ctx := context.Background()
