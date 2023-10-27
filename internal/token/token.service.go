@@ -22,7 +22,7 @@ type TokenService interface {
 }
 
 func NewService(secret []byte, ttl int) TokenService {
-	return &tokenServiceImpl {
+	return &tokenServiceImpl{
 		secret,
 		ttl,
 	}
@@ -63,7 +63,6 @@ func (s *tokenServiceImpl) Validate(tokenString string) (string, error) {
 	}
 	return "", errors.New("invalid token")
 }
-
 
 func (s *tokenServiceImpl) TTL() int {
 	return s.ttl

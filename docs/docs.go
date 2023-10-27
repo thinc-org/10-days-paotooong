@@ -11,9 +11,8 @@ import (
 var static []byte
 
 func GetDocHandler() runtime.HandlerFunc {
-	fs := func (w http.ResponseWriter, _ *http.Request, _ map[string]string) {
+	fs := func(w http.ResponseWriter, _ *http.Request, _ map[string]string) {
 		w.Write(static)
 	}
 	return fs
 }
-

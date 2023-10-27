@@ -16,13 +16,13 @@ var _ v1.WalletServiceServer = &walletServiceImpl{}
 
 type walletServiceImpl struct {
 	v1.UnimplementedWalletServiceServer
-	
-	client *ent.Client
+
+	client   *ent.Client
 	userRepo user_repo.UserRepository
 }
 
 func NewService(client *ent.Client, userRepo user_repo.UserRepository) v1.WalletServiceServer {
-	return &walletServiceImpl{ 
+	return &walletServiceImpl{
 		v1.UnimplementedWalletServiceServer{},
 		client,
 		userRepo,
@@ -39,7 +39,7 @@ func (s *walletServiceImpl) Pay(ctx context.Context, request *v1.PayRequest) (*v
 	if float32(payer.Money) < request.GetAmount() {
 		return nil, status.Error(codes.FailedPrecondition, "not enough money")
 	}
-	
+
 	receiverId := request.ReceiverId
 	receiver, err := s.userRepo.FindUserById(ctx, receiverId)
 	if err != nil {
@@ -80,13 +80,13 @@ func (s *walletServiceImpl) Pay(ctx context.Context, request *v1.PayRequest) (*v
 		Transaction: &v1.Transaction{
 			TransactionId: transaction.ID.String(),
 			Payer: &v1.UserTransaction{
-				Id: payer.ID.String(),
-				FirstName: payer.FirstName,
+				Id:         payer.ID.String(),
+				FirstName:  payer.FirstName,
 				FamilyName: payer.FamilyName,
 			},
 			Receiver: &v1.UserTransaction{
-				Id: receiverId,
-				FirstName: receiver.FirstName,
+				Id:         receiverId,
+				FirstName:  receiver.FirstName,
 				FamilyName: receiver.FamilyName,
 			},
 			Amount: request.GetAmount(),
@@ -105,7 +105,7 @@ func (s *walletServiceImpl) Topup(ctx context.Context, request *v1.TopupRequest)
 	}
 
 	amount := 100.0
-	if user.LastTopup != nil && time.Since(*user.LastTopup) < time.Duration(10 * time.Minute) {
+	if user.LastTopup != nil && time.Since(*user.LastTopup) < time.Duration(10*time.Minute) {
 		return nil, status.Error(codes.FailedPrecondition, "last topup is within 10 minutes")
 	}
 
@@ -135,8 +135,8 @@ func (s *walletServiceImpl) Topup(ctx context.Context, request *v1.TopupRequest)
 		Transaction: &v1.Transaction{
 			TransactionId: transaction.ID.String(),
 			Receiver: &v1.UserTransaction{
-				Id: user.ID.String(),
-				FirstName: user.FirstName,
+				Id:         user.ID.String(),
+				FirstName:  user.FirstName,
 				FamilyName: user.FamilyName,
 			},
 			Amount: float32(amount),
@@ -147,4 +147,3 @@ func (s *walletServiceImpl) Topup(ctx context.Context, request *v1.TopupRequest)
 		},
 	}, nil
 }
-

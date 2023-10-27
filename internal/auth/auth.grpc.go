@@ -20,14 +20,14 @@ var _ v1.AuthServiceServer = &authServiceImpl{}
 
 type authServiceImpl struct {
 	v1.UnimplementedAuthServiceServer
-	
-	client *ent.Client
+
+	client   *ent.Client
 	tokenSvc token.TokenService
 	userRepo user_repo.UserRepository
 }
 
 func NewService(client *ent.Client, tokenSvc token.TokenService, userRepo user_repo.UserRepository) v1.AuthServiceServer {
-	return &authServiceImpl{ 
+	return &authServiceImpl{
 		v1.UnimplementedAuthServiceServer{},
 		client,
 		tokenSvc,
@@ -54,11 +54,11 @@ func (s *authServiceImpl) Login(ctx context.Context, request *v1.LoginRequest) (
 	uId := user.ID
 	token := s.tokenSvc.CreateToken(uId.String())
 	ttl := s.tokenSvc.TTL()
-	
+
 	return &v1.LoginResponse{
 		Token: &v1.AuthToken{
 			AccessToken: token,
-			Ttl: int32(ttl),
+			Ttl:         int32(ttl),
 		},
 	}, nil
 }
@@ -96,15 +96,15 @@ func (s *authServiceImpl) Register(ctx context.Context, request *v1.RegisterRequ
 	if err != nil {
 		return nil, err
 	}
-	
+
 	uId := user.ID
 	token := s.tokenSvc.CreateToken(uId.String())
 	ttl := s.tokenSvc.TTL()
-	
+
 	return &v1.RegisterResponse{
 		Token: &v1.AuthToken{
 			AccessToken: token,
-			Ttl: int32(ttl),
+			Ttl:         int32(ttl),
 		},
 	}, nil
 }
@@ -118,10 +118,10 @@ func (s *authServiceImpl) Me(ctx context.Context, request *v1.MeRequest) (*v1.Me
 
 	return &v1.MeResponse{
 		User: &user_v1.User{
-			Id: user.ID.String(),
-			Email: user.Email,
-			Money: int32(user.Money),
-			FirstName: user.FirstName,
+			Id:         user.ID.String(),
+			Email:      user.Email,
+			Money:      int32(user.Money),
+			FirstName:  user.FirstName,
 			FamilyName: user.FamilyName,
 		},
 	}, nil
@@ -129,10 +129,10 @@ func (s *authServiceImpl) Me(ctx context.Context, request *v1.MeRequest) (*v1.Me
 
 func comparePasswordWithHash(hash, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-    return err == nil
+	return err == nil
 }
 
 func hashPassword(password string) (string, error) {
-    bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-    return string(bytes), err
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
 }

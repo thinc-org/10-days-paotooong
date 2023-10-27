@@ -3,12 +3,12 @@ package config
 import "github.com/spf13/viper"
 
 type GrpcConfig struct {
-	Port int `mapstructure:"port"`
+	Port               int    `mapstructure:"port"`
 	DbConnectionString string `mapstructure:"connection"`
 }
 
 type ProxyConfig struct {
-	Port int `mapstruct:"port"`
+	Port    int    `mapstruct:"port"`
 	GrpcUrl string `mapstructure:"grpc_url"`
 }
 

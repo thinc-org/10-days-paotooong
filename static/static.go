@@ -18,5 +18,3 @@ func GetDocHandler() runtime.HandlerFunc {
 		fs.ServeHTTP(w, r)
 	}
 }
-
-

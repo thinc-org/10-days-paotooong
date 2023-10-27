@@ -46,4 +46,3 @@ func (i *AuthInterceptor) Unary() grpc.UnaryServerInterceptor {
 		return handler(ctx, req)
 	}
 }
-
