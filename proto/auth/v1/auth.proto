@@ -6,8 +6,66 @@ import "user/v1/user.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "buf/validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+	info: {
+		title: "Paotooong"
+		version: "1.0"
+		contact: {
+		    name: "Thinc"
+		    url: "https://github.com/thinc-org/10-days-paotooong"
+		}
+		description:
+			"# Authenication\n"
+			"Once user is [register](#tag/AuthService/operation/AuthService_Register) and "
+			"[login](#tag/AuthService/operation/AuthService_Login), user can authorized "
+			"with `Authorization` header with bearer token\n\n"
+			"For example:\n"
+			"```\n"
+			"curl -X POST -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....\" /v1/wallet/topup "
+			"```"
+		extensions: {
+		key: "x-logo"
+		value: {
+			struct_value: {
+				fields: {
+					key: "url"
+					value: {
+						string_value: "/static/logo.png"
+					}
+				}
+				fields: {
+					key: "altText"
+					value: {
+						string_value: "Paotooong logo"
+					}
+				}
+				fields: {
+					key: "backgroundColor"
+					value: {
+						string_value: "#FFFFFF"
+					}
+				}
+			}
+		}
+	}
+	}
+	schemes: HTTP
+	schemes: HTTPS
+	consumes: "application/json"
+	security_definitions: {
+		security: {
+			key: "ApiKeyAuth"
+			value: {
+				type: TYPE_API_KEY
+				in: IN_HEADER
+				name: "Authorization"
+			}
+		}
+	}
+};
 
 service AuthService {
 	rpc Register(RegisterRequest) returns (RegisterResponse) {
@@ -15,65 +73,122 @@ service AuthService {
 			post: "/v1/auth/register"
 			body: "*"
 		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Register"
+		};
 	}
 	rpc Login(LoginRequest) returns (LoginResponse) {
 		option (google.api.http) = {
 			post: "/v1/auth/login"
 			body: "*"
 		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Login"
+			responses: {
+				key: "200"
+			}
+		};
 	}
 	rpc Me(MeRequest) returns (MeResponse) {
 		option (google.api.http) = {
 			get: "/v1/auth/me"
 		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Me"
+			security: {
+				security_requirement: {
+					key: "ApiKeyAuth"
+					value: {}
+				}
+			}
+		};
 	}
 }
 
 message AuthToken {
-	string access_token = 1;
-	int32 ttl = 2;
+	option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+		json_schema: {
+			required: [
+				"access_token",
+				"ttl"
+			]
+		}
+	};
+
+	string access_token = 1 [
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTg0MjA0MjksImlhdCI6MTY5ODQxNjgyOSwiaXNzIjoicGFvdG9vb25nIiwic3ViIjoiN2I5Nzg2NjktODNkMy00OWM5LTgxZWItNzhlZmJmODQyZDdmIn0.QfYPgziSxdfkM7ZVVTm2wTKVuyCtxGBUkkOsZyfWriA\"";
+		}
+	];
+	int32 ttl = 2 [
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "3600";
+		}
+	];
 }
 
 // Register
 message RegisterRequest {
 	string email = 1 [
 		(google.api.field_behavior) = REQUIRED,
-		(buf.validate.field).string.email = true
+		(buf.validate.field).string.email = true,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"hello@world.com\""
+		}
 	];
 	string password = 2 [
 		(google.api.field_behavior) = REQUIRED,
 		(buf.validate.field).string.min_len = 8,
-		(buf.validate.field).string.max_len = 32
+		(buf.validate.field).string.max_len = 32,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"6C@S^KdY9YVrYT6VvgzxB6%$\""
+		}
 	];
 	string first_name = 3 [
 		(google.api.field_behavior) = REQUIRED,
-		(buf.validate.field).string.min_len = 1
+		(buf.validate.field).string.min_len = 1,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"Sasuke\""
+		}
 	];
 	string family_name = 4 [
 		(google.api.field_behavior) = REQUIRED,
-		(buf.validate.field).string.min_len = 1
+		(buf.validate.field).string.min_len = 1,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"Uchiha\""
+		}
 	];
 }
 
 message RegisterResponse {
-	AuthToken token = 1;
+	AuthToken token = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
 }
 
 // Login
 message LoginRequest {
 	string email = 1 [
 		(google.api.field_behavior) = REQUIRED,
-		(buf.validate.field).string.email = true
+		(buf.validate.field).string.email = true,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"hello@world.com\""
+		}
 	];
 	string password = 2 [
 		(google.api.field_behavior) = REQUIRED,
 		(buf.validate.field).string.min_len = 8,
-		(buf.validate.field).string.max_len = 32
+		(buf.validate.field).string.max_len = 32,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"6C@S^KdY9YVrYT6VvgzxB6%$\""
+		}
 	];
 }
 
 message LoginResponse {
-	AuthToken token = 1;
+	AuthToken token = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
 }
 
 // Me
@@ -81,6 +196,16 @@ message MeRequest {
 }
 
 message MeResponse {
-	user.v1.User user = 1;
+	option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+		json_schema: {
+			required: [
+				"user"
+			]
+		}
+	};
+
+	user.v1.User user = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
 }
 

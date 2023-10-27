@@ -14,6 +14,7 @@ import (
 	"github.com/thinc-org/10-days-paotooong/docs"
 	auth "github.com/thinc-org/10-days-paotooong/gen/proto/auth/v1"
 	wallet "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1"
+	"github.com/thinc-org/10-days-paotooong/static"
 )
 
 var (
@@ -33,12 +34,14 @@ func run() error {
 	}
 
 	docsHandlerFunc := docs.GetDocHandler()
+	staticHandlerFunc := static.GetDocHandler()
 
 	// Register gRPC server endpoint
 	// Note: Make sure the gRPC server is running properly and accessible
 	healthClient := grpc_health_v1.NewHealthClient(grpcConn)
 	mux := runtime.NewServeMux(runtime.WithHealthEndpointAt(healthClient, "/health"))
 	mux.HandlePath("GET", "/v1/docs", docsHandlerFunc)
+	mux.HandlePath("GET", "/static/*", staticHandlerFunc)
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	err = auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {

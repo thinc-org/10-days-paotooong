@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "buf/validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/thinc-org/10-days-paotooong/gen/proto/wallet/v1";
 
@@ -15,21 +16,55 @@ service WalletService {
 			post: "/v1/wallet/pay/{receiver_id}"
 			body: "*"
 		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Pay"
+			security: {
+				security_requirement: {
+					key: "ApiKeyAuth"
+					value: {}
+				}
+			}
+		};
 	}
 	rpc Topup(TopupRequest) returns (TopupResponse) {
 		option (google.api.http) = {
 			post: "/v1/wallet/topup"
 		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Topup"
+			description:
+				"Reap your free money every *10 minutes* :)"
+			security: {
+				security_requirement: {
+					key: "ApiKeyAuth"
+					value: {}
+				}
+			}
+		};
 	}
 }
 
 message Transaction {
-	string transaction_id = 1;
+	string transaction_id = 1 [
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"75107c76-ecf0-407c-aa72-2694f7990740\""
+		},
+		(google.api.field_behavior) = REQUIRED
+	];
 	optional UserTransaction payer = 2;
 	optional UserTransaction receiver = 3;
-	float amount = 4;
-	google.protobuf.Timestamp created_at = 5;
-	TransactionType type = 6;
+	float amount = 4 [
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "420.69"
+		},
+		(google.api.field_behavior) = REQUIRED
+	];
+	google.protobuf.Timestamp created_at = 5 [
+		(google.api.field_behavior) = REQUIRED
+	];
+	TransactionType type = 6 [
+		(google.api.field_behavior) = REQUIRED
+	];
 }
 
 enum TransactionType {
@@ -39,9 +74,22 @@ enum TransactionType {
 }
 
 message UserTransaction {
-	string id = 1;
-	string first_name = 2;
-	string family_name = 3;
+	string id = 1 [
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			format: "uuid",
+			example: "\"2438ac3c-37eb-4902-adef-ed16b4431030\""
+		}
+	];
+	string first_name = 2 [
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"Sasuke\""
+		}
+	];
+	string family_name = 3 [
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"Uchiha\""
+		}
+	];
 }
 
 // Pay
@@ -52,12 +100,17 @@ message PayRequest {
 	];
 	float amount = 2 [
 		(google.api.field_behavior) = REQUIRED,
-		(buf.validate.field).float.gt = 0
+		(buf.validate.field).float.gt = 0,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "420.69"
+		}
 	];
 }
 
 message PayResponse {
-	Transaction transaction = 1;
+	Transaction transaction = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
 }
 
 // Topup
@@ -65,6 +118,8 @@ message TopupRequest {
 }
 
 message TopupResponse {
-	Transaction transaction = 1;
+	Transaction transaction = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
 }
 
