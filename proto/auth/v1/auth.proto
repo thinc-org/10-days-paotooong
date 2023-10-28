@@ -26,8 +26,9 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 			"```\n"
 			"curl -X POST -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....\" /v1/wallet/topup "
 			"```\n\n"
-			"If you get `Unauthorized`, this mean that you have not put in your token "
-			"or your token is invalid (expired, incorrect hash)"
+			"If you get `Unauthorized`, this mean that you have not put in your token in the header"
+			"or your token is invalid provided (expired, incorrect hash).\n\n"
+			"The token is configured to expired in 10 days, hard-coding it is also a choice."
 		extensions: {
 		key: "x-logo"
 		value: {
