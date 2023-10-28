@@ -43,7 +43,11 @@ func (s *walletServiceImpl) Pay(ctx context.Context, request *v1.PayRequest) (*v
 		return nil, status.Error(codes.FailedPrecondition, "not enough money")
 	}
 
+
 	receiverId := request.ReceiverId
+	if payer.ID.String() == receiverId {
+		return nil, status.Error(codes.FailedPrecondition, "you cannot pay to yourself")
+	}
 	receiver, err := s.userRepo.FindUserById(ctx, receiverId)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "receiver not found")
@@ -270,13 +274,17 @@ func (s *walletServiceImpl) PayPleasePay(ctx context.Context, request *v1.PayPle
 		return nil, err
 	}
 
-	if float32(payer.Money) < float32(pleasePay.Amount) {
-		return nil, status.Error(codes.FailedPrecondition, "not enough money")
-	}
-
 	receiver, err := pleasePay.QueryReceiver().First(ctx)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "receiver not found")
+	}
+
+	if payer.ID == receiver.ID {
+		return nil, status.Error(codes.FailedPrecondition, "you cannot pay to yourself")
+	}
+
+	if float32(payer.Money) < float32(pleasePay.Amount) {
+		return nil, status.Error(codes.FailedPrecondition, "not enough money")
 	}
 
 	amount := pleasePay.Amount
