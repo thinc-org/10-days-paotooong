@@ -31,7 +31,7 @@ func NewRepository(client *ent.Client) UserRepository {
 func (r *userRepositoryImpl) FindUserById(ctx context.Context, uid string) (*ent.User, error) {
 	uuid, err := uuid.Parse(uid)
 	if err != nil {
-		return nil, status.Error(codes.FailedPrecondition, "invalid uid")
+		return nil, status.Error(codes.FailedPrecondition, "invalid uuid")
 	}
 
 	user, err := r.client.User.Query().Where(user.ID(uuid)).First(ctx)

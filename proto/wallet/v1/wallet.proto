@@ -42,6 +42,53 @@ service WalletService {
 			}
 		};
 	}
+	rpc CreatePleasePay(CreatePleasePayRequest) returns (CreatePleasePayResponse) {
+		option (google.api.http) = {
+			post: "/v1/wallet/payrequest"
+			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Create please pay"
+			description:
+				"Create pay request and send to your payer"
+			security: {
+				security_requirement: {
+					key: "ApiKeyAuth"
+					value: {}
+				}
+			}
+		};
+	}
+	rpc GetPleasePay(GetPleasePayRequest) returns (GetPleasePayResponse) {
+		option (google.api.http) = {
+			get: "/v1/wallet/payrequest/{id}"
+		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Get please pay"
+			description:
+				"Create pay request and send to your payer"
+			security: {
+				security_requirement: {
+					key: "ApiKeyAuth"
+					value: {}
+				}
+			}
+		};
+	}
+	rpc PayPleasePay(PayPleasePayRequest) returns (PayPleasePayResponse) {
+		option (google.api.http) = {
+			post: "/v1/wallet/payrequest/{id}"
+		};
+		option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Pay the please pay"
+			security: {
+				security_requirement: {
+					key: "ApiKeyAuth"
+					value: {}
+				}
+			}
+		};
+	}
 }
 
 message Transaction {
@@ -92,6 +139,45 @@ message UserTransaction {
 	];
 }
 
+enum PleasePayState {
+	PLEASE_PAY_STATE_UNSPECIFIED = 0;
+	PLEASE_PAY_STATE_PENDING = 1;
+	PLEASE_PAY_STATE_PAID = 2;
+}
+
+message PleasePay {
+	string id = 1 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.uuid = true,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			format: "uuid",
+			example: "\"2438ac3c-37eb-4902-adef-ed16b4431030\""
+		}
+	];
+	PleasePayState state = 2 [
+		(google.api.field_behavior) = REQUIRED,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "\"PLEASE_PAY_STATE_PENDING\""
+		}
+	];
+	string receiver_id = 3 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).string.uuid = true,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			format: "uuid",
+			example: "\"2438ac3c-37eb-4902-adef-ed16b4431030\""
+		}
+	];
+	float amount = 4 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).float.gt = 0,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "420.69"
+		}
+	];
+	optional Transaction transaction = 5;
+}
+
 // Pay
 message PayRequest {
 	string receiver_id = 1 [
@@ -123,3 +209,45 @@ message TopupResponse {
 	];
 }
 
+// CreatePleasePay
+message CreatePleasePayRequest {
+	float amount = 1 [
+		(google.api.field_behavior) = REQUIRED,
+		(buf.validate.field).float.gt = 0,
+		(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+			example: "420.69"
+		}
+	];
+}
+
+message CreatePleasePayResponse {
+	PleasePay please_pay = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
+}
+
+// PayPleasePay
+message PayPleasePayRequest {
+	string id = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
+}
+
+message PayPleasePayResponse {
+	PleasePay please_pay = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
+}
+
+// GetPleasePay
+message GetPleasePayRequest {
+	string id = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
+}
+
+message GetPleasePayResponse {
+	PleasePay please_pay = 1 [
+		(google.api.field_behavior) = REQUIRED
+	];
+}
