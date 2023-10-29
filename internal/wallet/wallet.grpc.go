@@ -2,6 +2,7 @@ package wallet
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -281,6 +282,10 @@ func (s *walletServiceImpl) PayPleasePay(ctx context.Context, request *v1.PayPle
 
 	if payer.ID == receiver.ID {
 		return nil, status.Error(codes.FailedPrecondition, "you cannot pay to yourself")
+	}
+
+	if pleasePay.State != "PENDING" {
+		return nil, status.Error(codes.FailedPrecondition, fmt.Sprintf("please pay is not in correct state. expected `PENDING` found `%v`", pleasePay.State))
 	}
 
 	if float32(payer.Money) < float32(pleasePay.Amount) {
