@@ -28,7 +28,11 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 			"```\n\n"
 			"If you get `Unauthorized`, this mean that you have not put in your token in the header"
 			"or your token is invalid provided (expired, incorrect hash).\n\n"
-			"The token is configured to expired in 10 days, hard-coding it is also a choice."
+			"The token is configured to expired in 10 days, hard-coding it is also a choice.\n\n\n"
+			"# Third-party application"
+			"To use Paotooong with third-party application, user should already have Paotooong's account by "
+			"manually registering it. Then the account can be bound by directly storing `access_token` and `ttl` from "
+			"[login](#tag/AuthService/operation/AuthService_Login)."
 		extensions: {
 		key: "x-logo"
 		value: {
