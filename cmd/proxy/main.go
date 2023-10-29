@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/rs/cors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/grpclog"
@@ -55,8 +56,22 @@ func run() error {
 	}
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
 
+	withCors := cors.New(cors.Options{
+		AllowOriginFunc:  func(origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"ACCEPT", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	}).Handler(mux)
+
+	srv := http.Server{
+		Addr:    fmt.Sprintf(":%v", config.Port),
+		Handler: withCors,
+	}
+
 	log.Printf("start listening http proxy on port %v", config.Port)
-	return http.ListenAndServe(fmt.Sprintf(":%v", config.Port), mux)
+	return srv.ListenAndServe()
 }
 
 func main() {
